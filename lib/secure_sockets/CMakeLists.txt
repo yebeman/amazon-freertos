@@ -31,3 +31,17 @@ afr_module_dependencies(
     AFR::crypto
     AFR::pkcs11
 )
+
+# Link to this INTERFACE target to use the default implementation based on lwIP.
+afr_module(secure_sockets_lwip INTERFACE)
+afr_module_sources(
+    secure_sockets_lwip INTERFACE
+    "${AFR_MODULES_DIR}/secure_sockets/portable/lwip/aws_secure_sockets.c"
+)
+afr_module_dependencies(
+    secure_sockets_lwip INTERFACE
+    AFR::tls
+    AFR::crypto
+    AFR::pkcs11
+    AFR::lwip
+)

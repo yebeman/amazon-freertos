@@ -225,12 +225,12 @@ LINK_LIBS   += $(MTK_LIBS)
 ##############################################################################
 
 
-C_FLAGS        += -I$(LIB_DIR)/third_party/lwip/src/portable/mediatek/include
-C_FLAGS        += -I$(LIB_DIR)/third_party/lwip/src/portable
+C_FLAGS        += -I$(LIB_DIR)/lwip/portable/mediatek/include
+C_FLAGS        += -I$(LIB_DIR)/lwip/portable
 
-C_FILES        +=   $(LIB_DIR)/third_party/lwip/src/portable/mediatek/netif/ethernetif.c
-C_FILES        +=   $(LIB_DIR)/third_party/lwip/src/portable/arch/sys_arch.c
-C_FILES        +=   $(LIB_DIR)/third_party/lwip/src/portable/mediatek/lwip_log.c
+C_FILES        +=   $(LIB_DIR)/lwip/portable/mediatek/netif/ethernetif.c
+C_FILES        +=   $(LIB_DIR)/lwip/portable/arch/sys_arch.c
+C_FILES        +=   $(LIB_DIR)/lwip/portable/mediatek/lwip_log.c
 
 C_FLAGS        += -I$(LIB_DIR)/third_party/lwip/src/include
 C_FLAGS        += -I$(LIB_DIR)/third_party/lwip/src/include/lwip
@@ -364,7 +364,7 @@ C_FLAGS         += -std=c99
 
 LD_FLAGS        += -Wl,-T$(LD_SCRIPT) $(LINK_LIBS)
 LD_FLAGS        += --specs=nano.specs -lnosys -nostartfiles -Wl,-wrap=malloc
-LD_FLAGS        += -Wl,-wrap=calloc -Wl,-wrap=realloc -Wl,-wrap=free
+LD_FLAGS        += -Wl,-wraaap=calloc -Wl,-wrap=realloc -Wl,-wrap=free
 
 ##############################################################################
 #

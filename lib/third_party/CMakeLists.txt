@@ -13,6 +13,26 @@ target_include_directories(
     "${AFR_3RDPARTY_DIR}/jsmn"
 )
 
+# lwip - lwIP 
+afr_glob_src(lwip_src DIRECTORY "${AFR_3RDPARTY_DIR}/lwip/src" RECURSE)
+list(FILTER lwip_src EXCLUDE REGEX "/apps*")
+# Build to static library to save some time.
+add_library(
+    afr_3rdparty_lwip STATIC
+    ${lwip_src}
+)
+target_include_directories(
+    afr_3rdparty_lwip
+    PUBLIC
+        "${AFR_3RDPARTY_DIR}/mbedtls/src/include"
+)
+target_link_libraries(
+    afr_3rdparty_lwip
+    PRIVATE AFR::kernel
+)
+add_library(3rdparty::lwip ALIAS afr_3rdparty_lwip)
+
+
 # mbedtls - TLS protocol implementation
 afr_glob_src(mbedtls_src DIRECTORY "${AFR_3RDPARTY_DIR}/mbedtls" RECURSE)
 # Build to static library to save some time.
