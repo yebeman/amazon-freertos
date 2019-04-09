@@ -10,14 +10,14 @@ endif()
 # -------------------------------------------------------------------------------------------------
 # Amazon FreeRTOS Console metadata
 # -------------------------------------------------------------------------------------------------
-afr_set_board_metadata(ID "STM32-B-L475E-IOT01A")
+afr_set_board_metadata(ID "CYW943907AEVAL1F")
 afr_set_board_metadata(DISPLAY_NAME "Cypress CYW943907AEVAL1F Development Kit")
-afr_set_board_metadata(DESCRIPTION "B-L475E-IOT01A Discovery kit with low-power RF, Wi-Fi, multiway sensing")
+afr_set_board_metadata(DESCRIPTION "The Cypress CYW943907AEVAL1F Evaluation Kit")
 afr_set_board_metadata(VENDOR_NAME "Cypress")
-afr_set_board_metadata(FAMILY_NAME "STM32L4")
+afr_set_board_metadata(FAMILY_NAME "CYW43907")
 afr_set_board_metadata(IS_ACTIVE "TRUE")
-afr_set_board_metadata(DATA_RAM_MEMORY "128KB")
-afr_set_board_metadata(PROGRAM_MEMORY "1MB")
+afr_set_board_metadata(DATA_RAM_MEMORY "640KB")
+afr_set_board_metadata(PROGRAM_MEMORY "2MB")
 afr_set_board_metadata(CODE_SIGNER "AmazonFreeRTOS-Default")
 afr_set_board_metadata(SUPPORTED_IDE "WicedStudio")
 afr_set_board_metadata(RECOMMENDED_IDE "WicedStudio")
@@ -25,8 +25,8 @@ afr_set_board_metadata(IDE_WicedStudio_NAME "WICED Studio by Cypress")
 afr_set_board_metadata(IDE_WicedStudio_COMPILER "GCC")
 afr_set_board_metadata(IDE_WicedStudio_RECOMMENDED "TRUE")
 
-afr_set_board_metadata(IDE_SystemWorkbench_PROJECT_LOCATION "${AFR_ROOT_DIR}/demos/st/stm32l475_discovery/ac6")
-afr_set_board_metadata(DEMO_COMMON_LOCATION "${AFR_ROOT_DIR}/demos/st/stm32l475_discovery/common")
+afr_set_board_metadata(IDE_WicedStudio_PROJECT_LOCATION "${AFR_ROOT_DIR}/demos/cypress/CYW943907AEVAL1F/wicedstudio")
+afr_set_board_metadata(DEMO_COMMON_LOCATION "${AFR_ROOT_DIR}/demos/cypress/CYW943907AEVAL1F/common")
 afr_set_board_metadata(THIRD_PARTY_LIB_LOCATION "${AFR_ROOT_DIR}/lib/third_party/mcu_vendor/cypress")
 
 # -------------------------------------------------------------------------------------------------
@@ -122,7 +122,9 @@ target_sources(
 afr_mcu_port(pkcs11)
 target_sources(
     AFR::pkcs11::mcu_port
-    INTERFACE "${AFR_MODULES_DIR}/pkcs11/${portable_dir}/aws_pkcs11_pal.c"
+    INTERFACE 
+        "${AFR_MODULES_DIR}/pkcs11/${portable_dir}/aws_pkcs11_pal.c"
+        "${AFR_MODULES_DIR}/pkcs11/${portable_dir}/hw_poll.c"
 )
 # Link to AFR::pkcs11_mbedtls if you want to use default implementation based on mbedtls.
 target_link_libraries(
@@ -138,7 +140,7 @@ target_link_libraries(
 )
 target_sources(
     AFR::secure_sockets::mcu_port
-    INTERFACE "${AFR_MODULES_DIR}/secure_sockets/${portable_dir}/aws_secure_sockets.c"
+    INTERFACE "${AFR_MODULES_DIR}/secure_sockets/portable/lwip/aws_secure_sockets.c"
 )
 
 # -------------------------------------------------------------------------------------------------
