@@ -1,6 +1,6 @@
-set(wicedsdk_dir "${AFR_3RDPARTY_DIR}/mcu_vendor/cypress/CYW943907AEVAL1F")
-set(board_demos_dir "${AFR_ROOT_DIR}/demos/cypress/CYW943907AEVAL1F/common")
-set(board_tests_dir "${AFR_ROOT_DIR}/tests/cypress/CYW943907AEVAL1F/common")
+set(wicedsdk_dir "${AFR_3RDPARTY_DIR}/mcu_vendor/cypress/CYW954907AEVAL1F")
+set(board_demos_dir "${AFR_ROOT_DIR}/demos/cypress/CYW954907AEVAL1F/common")
+set(board_tests_dir "${AFR_ROOT_DIR}/tests/cypress/CYW954907AEVAL1F/common")
 if(AFR_IS_TESTING)
     set(board_dir "${board_tests_dir}")
 else()
@@ -10,9 +10,9 @@ endif()
 # -------------------------------------------------------------------------------------------------
 # Amazon FreeRTOS Console metadata
 # -------------------------------------------------------------------------------------------------
-afr_set_board_metadata(ID "CYW943907AEVAL1F")
-afr_set_board_metadata(DISPLAY_NAME "Cypress CYW943907AEVAL1F Development Kit")
-afr_set_board_metadata(DESCRIPTION "The Cypress CYW943907AEVAL1F Evaluation Kit")
+afr_set_board_metadata(ID "CYW954907AEVAL1F")
+afr_set_board_metadata(DISPLAY_NAME "Cypress CYW954907AEVAL1F Development Kit")
+afr_set_board_metadata(DESCRIPTION "The Cypress CYW954907AEVAL1F Evaluation Kit")
 afr_set_board_metadata(VENDOR_NAME "Cypress")
 afr_set_board_metadata(FAMILY_NAME "ARM")
 afr_set_board_metadata(IS_ACTIVE "TRUE")
@@ -25,8 +25,8 @@ afr_set_board_metadata(IDE_WicedStudio_NAME "WICED Studio by Cypress")
 afr_set_board_metadata(IDE_WicedStudio_COMPILER "GCC")
 afr_set_board_metadata(IDE_WicedStudio_RECOMMENDED "TRUE")
 
-afr_set_board_metadata(IDE_WicedStudio_PROJECT_LOCATION "${AFR_ROOT_DIR}/demos/cypress/CYW943907AEVAL1F/wicedstudio")
-afr_set_board_metadata(DEMO_COMMON_LOCATION "${AFR_ROOT_DIR}/demos/cypress/CYW943907AEVAL1F/common")
+afr_set_board_metadata(IDE_WicedStudio_PROJECT_LOCATION "${AFR_ROOT_DIR}/demos/cypress/CYW954907AEVAL1F/wicedstudio")
+afr_set_board_metadata(DEMO_COMMON_LOCATION "${AFR_ROOT_DIR}/demos/cypress/CYW954907AEVAL1F/common")
 afr_set_board_metadata(THIRD_PARTY_LIB_LOCATION "${AFR_ROOT_DIR}/lib/third_party/mcu_vendor/cypress")
 
 # -------------------------------------------------------------------------------------------------
