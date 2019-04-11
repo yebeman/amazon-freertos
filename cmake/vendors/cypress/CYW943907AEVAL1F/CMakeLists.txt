@@ -1,4 +1,4 @@
-set(wicedsdk_dir "${AFR_3RDPARTY_DIR}/mcu_vendor/cypress/CYW943907AEVAL1F")
+set(wicedsdk_dir "${AFR_3RDPARTY_DIR}/mcu_vendor/cypress/WICED_SDK")
 set(board_demos_dir "${AFR_ROOT_DIR}/demos/cypress/CYW943907AEVAL1F/common")
 set(board_tests_dir "${AFR_ROOT_DIR}/tests/cypress/CYW943907AEVAL1F/common")
 if(AFR_IS_TESTING)
@@ -14,13 +14,13 @@ afr_set_board_metadata(ID "CYW943907AEVAL1F")
 afr_set_board_metadata(DISPLAY_NAME "Cypress CYW943907AEVAL1F Development Kit")
 afr_set_board_metadata(DESCRIPTION "The Cypress CYW943907AEVAL1F Evaluation Kit")
 afr_set_board_metadata(VENDOR_NAME "Cypress")
-afr_set_board_metadata(FAMILY_NAME "ARM")
+afr_set_board_metadata(FAMILY_NAME "CYW43907")
 afr_set_board_metadata(IS_ACTIVE "TRUE")
 afr_set_board_metadata(DATA_RAM_MEMORY "640KB")
 afr_set_board_metadata(PROGRAM_MEMORY "2MB")
 afr_set_board_metadata(CODE_SIGNER "AmazonFreeRTOS-Default")
-afr_set_board_metadata(SUPPORTED_IDE "WicedStudio")
-afr_set_board_metadata(RECOMMENDED_IDE "WicedStudio")
+afr_set_board_metadata(SUPPORTED_IDE "WICED-Studio6.2.1")
+afr_set_board_metadata(RECOMMENDED_IDE "WICED-Studio6.2.1")
 afr_set_board_metadata(IDE_WicedStudio_NAME "WICED Studio by Cypress")
 afr_set_board_metadata(IDE_WicedStudio_COMPILER "GCC")
 afr_set_board_metadata(IDE_WicedStudio_RECOMMENDED "TRUE")
@@ -33,39 +33,152 @@ afr_set_board_metadata(THIRD_PARTY_LIB_LOCATION "${AFR_ROOT_DIR}/lib/third_party
 # Compiler settings
 # -------------------------------------------------------------------------------------------------
 afr_mcu_port(compiler)
-set(
-    defined_symbols
-    USE_HAL_DRIVER
-    USE_OFFLOAD_SSL
-    STM32L475xx
-    MQTTCLIENT_PLATFORM_HEADER=MQTTCMSIS.h
-    ENABLE_IOT_INFO
-    ENABLE_IOT_ERROR
-    SENSOR
-    RFU
-)
-target_compile_definitions(
-    AFR::compiler::mcu_port
-    INTERFACE $<$<NOT:$<COMPILE_LANGUAGE:ASM>>:${defined_symbols}>
-)
 
-set(common_flags "-mcpu=cortex-m4" "-mthumb" "-mfloat-abi=hard" "-mfpu=fpv4-sp-d16")
-set(c_flags "-Wall" "-fmessage-length=0" "-ffunction-sections")
-set(linker_flags "-specs=nosys.specs" "-Wl,-Map=output.map,--gc-sections,-zmuldefs" "-lm")
+# Compile definitions/macros
+target_compile_definitions(
+     AFR::compiler::mcu_port
+     INTERFACE AmazonFreeRTOS
+)
 
 # Compiler flags
-target_compile_options(
+# target_compile_options(
+#     AFR::compiler::mcu_port
+#     INTERFACE
+#         -std=c11
+# )
+set(
+    defined_symbols
+    SFLASH_APPS_HEADER_LOC=0x00010000 
+    PLATFORM_NO_DDR=1 
+    PLATFORM_NO_GMAC=1 
+    OTP_WORD_NUM_SHA_KEY=258 
+    OTP_WORD_NUM_SHA_KEY_R=242 
+    OTP_WORD_NUM_AES_KEY=282 
+    OTP_WORD_NUM_AES_KEY_R=274 
+    SECUREBOOT_SHA_KEY_SIZE=32 
+    GSIO_I2C_REPEATED_START_NEEDS_GPIO=1 
+    PLATFORM_HIB_WAKE_CTRL_FREQ_BITS_FLIPPED 
+    CRLF_STDIO_REPLACEMENT 
+    WICED_DISABLE_CONFIG_TLS 
+    PLATFORM_SECURESFLASH_ENABLED=0 
+    PLATFORM_SECUREDCT_ENABLED=0 
+    NORMAL_IMAGE_DCT_1_AREA_BASE=0x00008000 
+    MIN_WM8533_DB_LEVEL=-53.0 
+    MAX_WM8533_DB_LEVEL=6.0 
+    PLATFORM_ALP_CLOCK_RES_FIXUP=0 
+    MAX_WATCHDOG_TIMEOUT_SECONDS=22 
+    MAX_WAKE_FROM_SLEEP_DELAY_TICKS=500 
+    PLATFORM_L1_CACHE_SHIFT=5 
+    PLATFORM_SUPPORTS_LOW_POWER_MODES
+    BCM43909 
+    ENABLE_ARM_DSP_INSTRUCTIONS
+    PLAT_NOTIFY_FREE
+    USING_WICEDFS
+    wifi_firmware_image=resources_firmware_DIR_43909_DIR_43909B0_bin
+    WWD_STARTUP_DELAY=10
+    BOOTLOADER_MAGIC_NUMBER=0x4d435242
+    NETWORK_LwIP=1 
+    LwIP_VERSION=\"v2.0.3\"
+    RTOS_FreeRTOS=1 
+    configUSE_MUTEXES 
+    configUSE_RECURSIVE_MUTEXES 
+    FreeRTOS_VERSION=\"v10.0.0\" 
+    SFLASH_SUPPORT_MACRONIX_PARTS 
+    USING_EXTERNAL_ADC 
+    WICED_AMAZON_FREERTOS_SDK 
+    WICED_SDK_WIFI_CONFIG_DCT_H=\"./include/default_wifi_config_dct.h\"
+    WICED_SDK_BT_CONFIG_DCT_H=\"./include/default_bt_config_dct.h\" 
+)
+
+set(
+    kernel_inc_dirs
+    "${wicedsdk_dir}/WICED/platform/MCU/BCM4390x/peripherals/spi_flash"
+    "${wicedsdk_dir}/libraries/utilities/ring_buffer 
+    "${wicedsdk_dir}/WICED/platform/GCC/" 
+    "${wicedsdk_dir}/libraries/utilities/crc/."
+    "${wicedsdk_dir}/libraries/utilities/TLV/."
+    "${wicedsdk_dir}/WICED/network/LwIP/WWD/FreeRTOS/."
+    "${wicedsdk_dir}/WICED/platform/MCU/BCM4390x/."
+    "${wicedsdk_dir}/WICED/platform/MCU/."
+    "${wicedsdk_dir}/WICED/platform/ARM_CR4"
+    "${wicedsdk_dir}/WICED/platform/MCU/BCM4390x/WAF"
+    "${wicedsdk_dir}/WICED/platform/MCU/BCM4390x/peripherals"
+    "${wicedsdk_dir}/WICED/platform/MCU/BCM4390x/peripherals/include"
+    "${wicedsdk_dir}/WICED/platform/MCU/BCM4390x/peripherals/tlsf"
+    "${wicedsdk_dir}/WICED/platform/MCU/BCM4390x/./Library/drivers/spi_flash" 
+    "${wicedsdk_dir}/WICED/platform/MCU/BCM4390x/./platforms/CYW943907AEVAL1F"
+    "${wicedsdk_dir}/WICED/platform/MCU/BCM4390x/./platforms/CYW943907AEVAL1F/" 
+    "${wicedsdk_dir}/WICED/platform/include"
+    "${wicedsdk_dir}/WICED/platform/MCU/BCM4390x/./libraries/bluetooth/include"
+    "${wicedsdk_dir}/libraries/filesystems/wicedfs/src"
+    "${wicedsdk_dir}/WICED/WWD/"
+    "${wicedsdk_dir}/WICED/WWD/include" 
+    "${wicedsdk_dir}/WICED/WWD/include/network" 
+    "${wicedsdk_dir}/WICED/WWD/include/RTOS"
+    "${wicedsdk_dir}/WICED/WWD/internal/bus_protocols/SoC/43909"
+    "${wicedsdk_dir}/WICED/WWD/internal/chips/4390x" 
+    "${wicedsdk_dir}/libraries/utilities/linked_list" 
+    "${wicedsdk_dir}/WICED/RTOS/FreeRTOS/WICED" 
+    "${wicedsdk_dir}/WICED/network/LwIP/WICED/."
+    "${wicedsdk_dir}/WICED/network/LwIP/WWD/." 
+    "${wicedsdk_dir}/WICED/RTOS/FreeRTOS/WICED/."
+    "${wicedsdk_dir}/WICED/RTOS/FreeRTOS/WWD/."
+    "${wicedsdk_dir}/WICED/RTOS/FreeRTOS/WWD/./CYW943907AEVAL1F"
+    "${wicedsdk_dir}/WICED/RTOS/FreeRTOS/WWD/./ARM_CR4"
+    "${wicedsdk_dir}/libraries/utilities/wifi/."
+    "${wicedsdk_dir}/WICED/."
+    "${wicedsdk_dir}/WICED/platform/include"
+    "${wicedsdk_dir}/WICED/platform/include"
+    "${wicedsdk_dir}/WICED/libraries/test/wl_tool/43909B0/include"
+    "${wicedsdk_dir}/libraries/utilities/wifi"
+    "${wicedsdk_dir}/WICED/network/LwIP/WICED"
+    "${wicedsdk_dir}/platforms/CYW943907AEVAL1F/."
+    "${wicedsdk_dir}/platforms/CYW943907AEVAL1F/./board_revision/P103"
+    "${AFR_3RDPARTY_DIR}/jsmn"
+    "${AFR_3RDPARTY_DIR}/pkcs11"
+    "${AFR_3RDPARTY_DIR}/lwip/src/include"
+    "${AFR_3RDPARTY_DIR}/lwip/src/include/lwip"
+    "${AFR_3RDPARTY_DIR}/lwip/src/portable"
+    "${AFR_3RDPARTY_DIR}/lwip/src/portable/cypress/CYW943907AEVAL1F"
+    "${AFR_3RDPARTY_DIR}/lwip/src/portable/cypress/CYW943907AEVAL1F/include"
+    "${AFR_3RDPARTY_DIR}/lwip/src/portable/cypress/arch"
+    "${AFR_3RDPARTY_DIR}/mbedtls/include"
+    "${board_dir}/application_code/cypress_code/include"
+    "${board_dir}/config_files"
+    "${AFR_ROOT_DIR}/demos/common/include"
+    "${AFR_ROOT_DIR}/lib/include"
+    "${AFR_ROOT_DIR}/lib/include/private"
+)
+
+# Global include directories
+target_include_directories(
     AFR::compiler::mcu_port
     INTERFACE
-        ${common_flags}
-        $<$<NOT:$<COMPILE_LANGUAGE:ASM>>:${c_flags}>
+        ${kernel_inc_dirs}
 )
 
 # Linker flags
-target_link_options(
-    AFR::compiler::mcu_port
-    INTERFACE ${common_flags} ${linker_flags}
-)
+# target_link_options(
+#     AFR::compiler::mcu_port
+#     INTERFACE
+#         -mcpu=cortex-m4
+# )
+
+# Library search path for linker
+# target_link_directories(
+#     AFR::compiler::mcu_port
+#     INTERFACE
+#         "<lib_path_0>"
+#         "<lib_path_1>"
+# )
+
+# Libraries to link
+# target_link_libraries(
+#     AFR::compiler::mcu_port
+#     INTERFACE
+#         "foo.a"
+#         "/full/path/bar.a"
+# )
 
 # -------------------------------------------------------------------------------------------------
 # Amazon FreeRTOS portable layers
@@ -74,42 +187,6 @@ set(vendor "cypress")
 set(board "CYW943907AEVAL1F")
 set(portable_dir "portable/${vendor}/${board}")
 
-# Kernel
-afr_mcu_port(kernel)
-afr_glob_src(driver_src DIRECTORY "${wicedsdk_dir}" RECURSE)
-target_sources(
-    AFR::kernel::mcu_port
-    INTERFACE
-        ${driver_src}
-        "${AFR_MODULES_DIR}/FreeRTOS/portable/GCC/ARM_CM4F/port.c"
-        "${AFR_MODULES_DIR}/FreeRTOS/portable/GCC/ARM_CM4F/portmacro.h"
-        "${AFR_MODULES_DIR}/FreeRTOS/portable/MemMang/$<IF:${AFR_IS_TESTING},heap_4.c,heap_5.c>"
-)
-set(
-    kernel_inc_dirs
-    "${AFR_MODULES_DIR}/FreeRTOS/portable/GCC/ARM_CM4F"
-    "${stm32l475_dir}/BSP/B-L475E-IOT01"
-    "${stm32l475_dir}/BSP/Components/Common"
-    "${stm32l475_dir}/BSP/Components/es_wifi"
-    "${stm32l475_dir}/BSP/Components/hts221"
-    "${stm32l475_dir}/BSP/Components/lis3mdl"
-    "${stm32l475_dir}/BSP/Components/lps22hb"
-    "${stm32l475_dir}/BSP/Components/lsm6dsl"
-    "${stm32l475_dir}/BSP/Components/mx25r6435f"
-    "${stm32l475_dir}/BSP/Components/vl53l0x"
-    "${stm32l475_dir}/CMSIS/Include"
-    "${stm32l475_dir}/CMSIS/Device/ST/STM32L4xx/Include"
-    "${stm32l475_dir}/STM32L4xx_HAL_Driver/Inc"
-    "${stm32l475_dir}/STM32L4xx_HAL_Driver/Inc/Legacy"
-    "${board_dir}/config_files"
-    "${board_dir}/application_code"
-    "${board_dir}/application_code/st_code"
-    "$<IF:${AFR_IS_TESTING},${AFR_TESTS_DIR},${AFR_DEMOS_DIR}>/include"
-)
-target_include_directories(
-    AFR::kernel::mcu_port
-    INTERFACE $<$<NOT:$<COMPILE_LANGUAGE:ASM>>:${kernel_inc_dirs}>
-)
 
 # WiFi
 afr_mcu_port(wifi)
